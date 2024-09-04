@@ -612,12 +612,11 @@
                         <p class="profit-new__label">Інфраструктура А-класу та підтримка 24/7</p>
                     </div>
                 </div>
-        
             </div>
         </div>
     </section>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
         const svgElement = document.querySelectorAll(".profit-new__item");
         const elements = document.querySelectorAll("path.animate-on-scroll");
 
@@ -628,7 +627,7 @@
                 const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
 
                 if (entry.isIntersecting) {
-                    // Перевірка, чи анімація вже виконана
+                    // Перевірка на наявність класу 'animation-done'
                     if (!card.classList.contains('animation-done')) {
                         card.classList.add("active");
                         card.querySelectorAll("animate, animateTransform").forEach(animation => {
@@ -647,11 +646,11 @@
                             }
                         }
 
-                        // Позначити, що анімація завершена
+                        // Позначити як виконану
                         card.classList.add('animation-done');
                     }
                 } else {
-                    // Видалити клас 'animation-done' при виході з видимості, якщо потрібно
+                    // Скидання класу 'animation-done' для повторної анімації
                     card.classList.remove('animation-done');
                 }
             });
