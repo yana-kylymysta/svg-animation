@@ -134,6 +134,8 @@
         <div class="container">
             <!-- <div class="h2 profit-new__title item-fade-up">В чому вигода від співпраці?</div> -->
             <div class="profit-new__wrapper">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. In numquam eaque esse perferendis illo ex molestias veniam provident eos consequuntur magnam, dolorem aliquam voluptas commodi, pariatur maiores optio fuga iure, perspiciatis illum! Debitis corrupti velit architecto atque soluta illo officia voluptatibus laboriosam fugiat, sint delectus itaque suscipit perspiciatis? Minus voluptatibus voluptatum omnis vitae earum perferendis eos, quasi dolore totam quod maiores asperiores fuga enim ratione tempore nemo delectus quia ipsa culpa nam accusantium sint natus vero. Ea pariatur natus est, reprehenderit fugiat tenetur velit obcaecati aperiam debitis nisi perferendis corporis vel illum exercitationem labore sit, saepe doloribus cumque doloremque quod!
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum quas dolore repudiandae odio. Fuga libero quis perferendis culpa ex esse nulla odio numquam, id ipsam pariatur delectus tenetur maxime? Earum exercitationem qui optio blanditiis modi ipsum ad reiciendis voluptatum iusto, voluptate, officiis totam nihil libero labore nisi, aut eos consequatur minus ab laborum soluta quas. Eveniet ipsum molestias harum sed corporis minus magnam ipsa distinctio. Sint blanditiis mollitia iure omnis quasi recusandae deserunt sequi perferendis dolores! Explicabo, dolore beatae? Commodi nisi deleniti error laborum dicta nesciunt expedita nemo, rerum sit molestias doloribus, tempore aliquam, molestiae facere ex provident recusandae modi alias eligendi eum earum qui non in dolores. Necessitatibus minus voluptates aut quod, pariatur eveniet amet nulla ipsum eligendi praesentium aspernatur. Animi provident consequuntur id quas eaque veniam, deserunt mollitia dicta, error suscipit, eveniet nobis! Iste possimus earum inventore doloremque quisquam culpa neque quidem odit minima cum nulla in maxime nihil maiores, sequi provident est et voluptatibus vitae nobis consectetur. Consequatur quas velit at nam asperiores odit ipsa fugit quibusdam neque qui? Laborum esse asperiores voluptatibus, tempora nemo veritatis quibusdam in nostrum ratione nam quae delectus excepturi totam repudiandae expedita ab rem, suscipit optio deleniti incidunt numquam! Ea commodi est possimus excepturi accusantium, fugiat consequatur ut expedita! Eos hic labore iste nesciunt recusandae architecto! Eveniet dignissimos dolorum quasi soluta error voluptatum obcaecati, deleniti distinctio numquam quibusdam quisquam architecto, facere, ab tenetur? Animi nisi fugit inventore optio temporibus eum iste, doloribus earum ipsam aspernatur facere ullam culpa quidem id, quis eveniet asperiores alias officia. Velit quos sit expedita ipsa omnis culpa nemo eius impedit nam corporis! Minus voluptate eos tempore veniam quam quo recusandae odit aspernatur esse ab! Aliquid labore quidem et earum dolore? Quia illo incidunt ut eos repellat culpa voluptate optio, dicta, consectetur quam sunt necessitatibus est ipsum ducimus eligendi sed voluptatibus dolore pariatur odit voluptatem. Officiis aperiam necessitatibus illum sunt at autem, qui velit. Quisquam, magni minus! Animi perspiciatis nesciunt amet blanditiis numquam, voluptas quos! Iure harum eaque magni provident modi totam nesciunt commodi consequuntur, iusto maiores iste! Libero dignissimos vel error ducimus ea enim iste facere vitae corporis accusantium deserunt eligendi asperiores consectetur dolore excepturi, sequi reiciendis nostrum eaque iusto fuga rerum ullam omnis! Odio aspernatur dicta placeat dolores quaerat nulla vel possimus ea neque quam tenetur, pariatur explicabo laboriosam esse perspiciatis molestias quisquam accusamus! Eveniet maiores magnam sunt voluptate commodi perferendis libero quibusdam tempore dolore nihil? Illum nihil perspiciatis possimus, sed repellendus impedit nemo ea ratione inventore vero accusantium! Harum, sit blanditiis, error hic, quo deserunt sed quaerat animi eveniet commodi architecto aliquid beatae officia vitae aliquam illo numquam officiis! Dicta, porro? Aut aliquid veritatis earum fuga ea, magnam perspiciatis inventore pariatur. Magnam sapiente beatae perferendis corrupti nulla. Numquam quam quis, dignissimos ex sit eius delectus debitis unde magni ipsum quae repudiandae corporis! Suscipit repellat iste ab ad odio accusantium! Saepe optio voluptatem voluptates illo expedita porro similique in architecto delectus natus qui aut esse minus numquam aliquid error incidunt, quibusdam amet repellendus necessitatibus autem. Laudantium.
                 <div class="profit-new__grid ">
                     <div class="profit-new__item">
                         <div class="profit-new__icon">
@@ -615,62 +617,69 @@
         </div>
     </section>
     <script>
-     document.addEventListener("DOMContentLoaded", function () {
-            const svgElement = document.querySelectorAll(".profit-new__item");
-            const elements = document.querySelectorAll("path.animate-on-scroll");
+    document.addEventListener("DOMContentLoaded", function () {
+            const svgElements = document.querySelectorAll(".profit-new__item");
+            const animatedPaths = document.querySelectorAll("path.animate-on-scroll");
 
+            // Налаштовуємо IntersectionObserver для стеження за видимістю елементів
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // const card = entry.target;
-                    // const numbs = card.querySelector('.profit-new__numbs');
-
                     if (entry.isIntersecting) {
+                        // Якщо елемент в зоні видимості, запускаємо анімацію
                         entry.target.classList.add("active");
                         entry.target.querySelectorAll("animate, animateTransform").forEach(animation => {
                             animation.beginElement();
                         });
-                    }
 
-                    // if (!numbs.matches('.animate')) {
-                    //     numbs.classList.add('animate');
-                    // } else {
-                    //     numbs.classList.remove('animate');
-                    //     void numbs.offsetWidth; 
-                    //      setTimeout(() => {
-                    //         numbs.classList.add('animate')
-                    //     }, 200);
-                    // }
+                        // Запускаємо анімацію чисел
+                        const parent = entry.target.closest('.profit-new__numb-animate')
+                        const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
+                        console.log(entry.target)
+                        console.log(numbs)
+                        if (numbs && !numbs.classList.contains('animate')) {
+                            numbs.classList.add('animate');
+                        } else if (numbs) {
+                            numbs.classList.remove('animate');
+                            void numbs.offsetWidth; // Перезапуск анімації
+                            setTimeout(() => {
+                                numbs.classList.add('animate');
+                            }, 200);
+                        }
+                    }
                 });
             }, {
                 threshold: 0.1
             });
-            elements.forEach(element => {
+
+            // Відстежуємо всі анімовані шляхи
+            animatedPaths.forEach(element => {
                 observer.observe(element);
             });
-            svgElement.forEach(card => {
-                card.addEventListener("mouseenter", function ({ currentTarget }) {
-                    const path = currentTarget.querySelectorAll("path.animate-on-scroll");
-                    path.forEach(element => {
+
+            // Додаємо обробник події наведення на картки
+            svgElements.forEach(card => {
+                card.addEventListener("mouseenter", function () {
+                    const paths = card.querySelectorAll("path.animate-on-scroll");
+                    paths.forEach(element => {
                         element.classList.add("active");
                         element.querySelectorAll("animate, animateTransform").forEach(animation => {
                             animation.beginElement();
                         });
                     });
-                    if (card.matches('.profit-new__item-numb')) {
-                        const numbs = card.querySelector('.profit-new__numbs')
-                        if(!numbs.matches('.animate')) {
-                            numbs.classList.add('animate')
-                        } {
-                            numbs.classList.remove('animate');
-                            setTimeout(() => {
-                                numbs.classList.add('animate')
-                            }, 200);
-                            
-                        }
+
+                    const numbs = card.querySelector('.profit-new__numbs');
+                    if (numbs && !numbs.classList.contains('animate')) {
+                        numbs.classList.add('animate');
+                    } else if (numbs) {
+                        numbs.classList.remove('animate');
+                        setTimeout(() => {
+                            numbs.classList.add('animate');
+                        }, 200);
                     }
                 });
-            })  
+            });
         });
+
 
     </script>
 </body>
