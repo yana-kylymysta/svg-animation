@@ -617,9 +617,10 @@
         </div>
     </section>
     <script>
-   document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
         const svgElement = document.querySelectorAll(".profit-new__item");
         const elements = document.querySelectorAll("path.animate-on-scroll");
+        const animationCooldown = new Map(); // Для контролю таймерів
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -628,8 +629,11 @@
                 const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
 
                 if (entry.isIntersecting) {
-                    // Перевіряємо наявність спеціального класу
-                    if (!card.classList.contains('animated')) {
+                    const lastAnimation = animationCooldown.get(card);
+                    const now = Date.now();
+
+                    // Перевіряємо, чи не пройшло достатньо часу
+                    if (!lastAnimation || (now - lastAnimation) > 1000) { // 1000 мс = 1 секунда
                         card.classList.add("active");
                         card.querySelectorAll("animate, animateTransform").forEach(animation => {
                             animation.beginElement();
@@ -647,12 +651,12 @@
                             }
                         }
 
-                        // Додаємо клас після анімації
-                        card.classList.add('animated');
+                        // Оновлюємо час останньої анімації
+                        animationCooldown.set(card, now);
                     }
                 } else {
-                    // Очищаємо клас, якщо потрібно повторити анімацію
-                    card.classList.remove('animated');
+                    // Можемо скинути час останньої анімації, якщо хочемо
+                    animationCooldown.delete(card);
                 }
             });
         }, {
@@ -687,7 +691,6 @@
             });
         });
     });
-
 </script>
 
 </body>
