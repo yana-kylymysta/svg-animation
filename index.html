@@ -620,7 +620,6 @@
   document.addEventListener("DOMContentLoaded", function () {
         const svgElement = document.querySelectorAll(".profit-new__item");
         const elements = document.querySelectorAll("path.animate-on-scroll");
-        const animationCooldown = new Map(); // Для контролю таймерів
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -629,11 +628,7 @@
                 const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
 
                 if (entry.isIntersecting) {
-                    const lastAnimation = animationCooldown.get(card);
-                    const now = Date.now();
-
-                    // Перевіряємо, чи не пройшло достатньо часу
-                    if (!lastAnimation || (now - lastAnimation) > 1000) { // 1000 мс = 1 секунда
+                    if (!card.dataset.animated) {
                         card.classList.add("active");
                         card.querySelectorAll("animate, animateTransform").forEach(animation => {
                             animation.beginElement();
@@ -651,12 +646,12 @@
                             }
                         }
 
-                        // Оновлюємо час останньої анімації
-                        animationCooldown.set(card, now);
+                        // Встановлюємо атрибут
+                        card.dataset.animated = "true";
                     }
                 } else {
-                    // Можемо скинути час останньої анімації, якщо хочемо
-                    animationCooldown.delete(card);
+                    // Можемо скинути атрибут для повторного запуску
+                    delete card.dataset.animated;
                 }
             });
         }, {
@@ -691,6 +686,7 @@
             });
         });
     });
+
 </script>
 
 </body>
