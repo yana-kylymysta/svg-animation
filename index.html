@@ -616,7 +616,7 @@
         </div>
     </section>
     <script>
-   document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const svgElement = document.querySelectorAll(".profit-new__item");
         const elements = document.querySelectorAll("path.animate-on-scroll");
 
@@ -626,8 +626,8 @@
                 const parent = card.closest('.profit-new__numb-animate');
                 const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
 
-                if (entry.isIntersecting) {
-                    // Перевірка на наявність класу 'animation-done'
+                if (entry.isIntersecting && !card.animationPlayed) {
+                    // Перевірка, чи анімація вже виконана
                     if (!card.classList.contains('animation-done')) {
                         card.classList.add("active");
                         card.querySelectorAll("animate, animateTransform").forEach(animation => {
@@ -646,16 +646,19 @@
                             }
                         }
 
-                        // Позначити як виконану
+                        // Позначити, що анімація завершена
                         card.classList.add('animation-done');
+                         card.animationPlayed = true;
                     }
-                } else {
-                    // Скидання класу 'animation-done' для повторної анімації
+                } else if (!entry.isIntersecting) {
+                        card.animationPlayed = false;
+                    // Видалити клас 'animation-done' при виході з видимості, якщо потрібно
                     card.classList.remove('animation-done');
                 }
             });
         }, {
-            threshold: 0.1
+            threshold: 0.1,
+            once: true 
         });
 
         elements.forEach(element => {
