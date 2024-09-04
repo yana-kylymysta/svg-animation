@@ -617,7 +617,7 @@
         </div>
     </section>
     <script>
-   document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const svgElement = document.querySelectorAll(".profit-new__item");
         const elements = document.querySelectorAll("path.animate-on-scroll");
 
@@ -628,7 +628,7 @@
                 const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
 
                 if (entry.isIntersecting) {
-                    // Додати клас активності лише якщо анімація ще не відбулася
+                    // Перевірка, чи анімація вже виконана
                     if (!card.classList.contains('animation-done')) {
                         card.classList.add("active");
                         card.querySelectorAll("animate, animateTransform").forEach(animation => {
@@ -687,6 +687,7 @@
             });
         });
     });
+
 </script>
 
 </body>
