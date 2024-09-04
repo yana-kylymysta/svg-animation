@@ -617,70 +617,77 @@
         </div>
     </section>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-            const svgElements = document.querySelectorAll(".profit-new__item");
-            const animatedPaths = document.querySelectorAll("path.animate-on-scroll");
+   document.addEventListener("DOMContentLoaded", function () {
+        const svgElement = document.querySelectorAll(".profit-new__item");
+        const elements = document.querySelectorAll("path.animate-on-scroll");
 
-            // Налаштовуємо IntersectionObserver для стеження за видимістю елементів
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Якщо елемент в зоні видимості, запускаємо анімацію
-                        entry.target.classList.add("active");
-                        entry.target.querySelectorAll("animate, animateTransform").forEach(animation => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const card = entry.target;
+                const parent = card.closest('.profit-new__numb-animate');
+                const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
+
+                if (entry.isIntersecting) {
+                    // Додати клас активності лише якщо анімація ще не відбулася
+                    if (!card.classList.contains('animation-done')) {
+                        card.classList.add("active");
+                        card.querySelectorAll("animate, animateTransform").forEach(animation => {
                             animation.beginElement();
                         });
 
-                        // Запускаємо анімацію чисел
-                        const parent = entry.target.closest('.profit-new__numb-animate')
-                        const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
-                        console.log(entry.target)
-                        console.log(numbs)
-                        if (numbs && !numbs.classList.contains('animate')) {
-                            numbs.classList.add('animate');
-                        } else if (numbs) {
-                            numbs.classList.remove('animate');
-                            void numbs.offsetWidth; // Перезапуск анімації
-                            setTimeout(() => {
+                        if (numbs) {
+                            if (!numbs.classList.contains('animate')) {
                                 numbs.classList.add('animate');
-                            }, 200);
+                            } else {
+                                numbs.classList.remove('animate');
+                                void numbs.offsetWidth; // Примусове перерахування
+                                setTimeout(() => {
+                                    numbs.classList.add('animate');
+                                }, 200);
+                            }
                         }
+
+                        // Позначити, що анімація завершена
+                        card.classList.add('animation-done');
                     }
-                });
-            }, {
-                threshold: 0.1
+                } else {
+                    // Видалити клас 'animation-done' при виході з видимості, якщо потрібно
+                    card.classList.remove('animation-done');
+                }
             });
-
-            // Відстежуємо всі анімовані шляхи
-            animatedPaths.forEach(element => {
-                observer.observe(element);
-            });
-
-            // Додаємо обробник події наведення на картки
-            svgElements.forEach(card => {
-                card.addEventListener("mouseenter", function () {
-                    const paths = card.querySelectorAll("path.animate-on-scroll");
-                    paths.forEach(element => {
-                        element.classList.add("active");
-                        element.querySelectorAll("animate, animateTransform").forEach(animation => {
-                            animation.beginElement();
-                        });
-                    });
-
-                    const numbs = card.querySelector('.profit-new__numbs');
-                    if (numbs && !numbs.classList.contains('animate')) {
-                        numbs.classList.add('animate');
-                    } else if (numbs) {
-                        numbs.classList.remove('animate');
-                        setTimeout(() => {
-                            numbs.classList.add('animate');
-                        }, 200);
-                    }
-                });
-            });
+        }, {
+            threshold: 0.1
         });
 
+        elements.forEach(element => {
+            observer.observe(element);
+        });
 
-    </script>
+        svgElement.forEach(card => {
+            card.addEventListener("mouseenter", function ({ currentTarget }) {
+                const path = currentTarget.querySelectorAll("path.animate-on-scroll");
+                path.forEach(element => {
+                    element.classList.add("active");
+                    element.querySelectorAll("animate, animateTransform").forEach(animation => {
+                        animation.beginElement();
+                    });
+                });
+
+                if (card.matches('.profit-new__item-numb')) {
+                    const numbs = card.querySelector('.profit-new__numbs')
+                    if (!numbs.matches('.animate')) {
+                        numbs.classList.add('animate');
+                    } else {
+                        numbs.classList.remove('animate');
+                        setTimeout(() => {
+                            numbs.classList.add('animate')
+                        }, 200);
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
