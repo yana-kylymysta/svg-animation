@@ -621,18 +621,27 @@
         const svgElement = document.querySelectorAll(".profit-new__item");
         const elements = document.querySelectorAll("path.animate-on-scroll");
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const card = entry.target;
-                const parent = card.closest('.profit-new__numb-animate');
-                const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
 
-                if (entry.isIntersecting) {
-                    if (!card.dataset.animated) {
-                        card.classList.add("active");
-                        card.querySelectorAll("animate, animateTransform").forEach(animation => {
+        function handleScroll() {
+            elements.forEach(element => {
+                if (isElementInViewport(element)) {
+                    if (!element.classList.contains('animated')) {
+                        element.classList.add("active");
+                        element.querySelectorAll("animate, animateTransform").forEach(animation => {
                             animation.beginElement();
                         });
+
+                        const parent = element.closest('.profit-new__numb-animate');
+                        const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
 
                         if (numbs) {
                             if (!numbs.classList.contains('animate')) {
@@ -646,21 +655,18 @@
                             }
                         }
 
-                        // Встановлюємо атрибут
-                        card.dataset.animated = "true";
+                        // Додаємо клас після анімації
+                        element.classList.add('animated');
                     }
                 } else {
-                    // Можемо скинути атрибут для повторного запуску
-                    delete card.dataset.animated;
+                    // Скидання класу для повторного запуску, якщо потрібно
+                    element.classList.remove('animated');
                 }
             });
-        }, {
-            threshold: 0.1
-        });
+        }
 
-        elements.forEach(element => {
-            observer.observe(element);
-        });
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Викликаємо при завантаженні сторінки, щоб анімації спрацювали для вже видимих елементів
 
         svgElement.forEach(card => {
             card.addEventListener("mouseenter", function ({ currentTarget }) {
