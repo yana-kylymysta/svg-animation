@@ -612,83 +612,85 @@
                         <p class="profit-new__label">Інфраструктура А-класу та підтримка 24/7</p>
                     </div>
                 </div>
+        
             </div>
         </div>
     </section>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const svgElement = document.querySelectorAll(".profit-new__item");
-        const elements = document.querySelectorAll("path.animate-on-scroll");
+            const svgElement = document.querySelectorAll(".profit-new__item");
+            const elements = document.querySelectorAll("path.animate-on-scroll");
+            const animationFlags = new WeakMap();
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const card = entry.target;
-                const parent = card.closest('.profit-new__numb-animate');
-                const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const card = entry.target;
+                    const parent = card.closest('.profit-new__numb-animate');
+                    const numbs = parent ? parent.querySelector('.profit-new__numbs') : null;
 
-                if (entry.isIntersecting && !card.animationPlayed) {
-                    // Перевірка, чи анімація вже виконана
-                    if (!card.classList.contains('animation-done')) {
-                        card.classList.add("active");
-                        card.querySelectorAll("animate, animateTransform").forEach(animation => {
+                    if (entry.isIntersecting) {
+                        // Використовуємо requestAnimationFrame
+                        requestAnimationFrame(() => {
+                            if (!animationFlags.has(card) || !animationFlags.get(card)) {
+                                card.classList.add("active");
+                                card.querySelectorAll("animate, animateTransform").forEach(animation => {
+                                    animation.beginElement();
+                                });
+
+                                if (numbs) {
+                                    if (!numbs.classList.contains('animate')) {
+                                        numbs.classList.add('animate');
+                                    } else {
+                                        numbs.classList.remove('animate');
+                                        void numbs.offsetWidth; // Примусове перерахування
+                                        setTimeout(() => {
+                                            numbs.classList.add('animate');
+                                        }, 200);
+                                    }
+                                }
+
+                                // Встановлюємо флаг анімації
+                                animationFlags.set(card, true);
+                            }
+                        });
+                    } else {
+                        // Скидання флага для повторного запуску анімації
+                        animationFlags.set(card, false);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+
+            svgElement.forEach(card => {
+                card.addEventListener("mouseenter", function ({ currentTarget }) {
+                    const path = currentTarget.querySelectorAll("path.animate-on-scroll");
+                    path.forEach(element => {
+                        element.classList.add("active");
+                        element.querySelectorAll("animate, animateTransform").forEach(animation => {
                             animation.beginElement();
                         });
-
-                        if (numbs) {
-                            if (!numbs.classList.contains('animate')) {
-                                numbs.classList.add('animate');
-                            } else {
-                                numbs.classList.remove('animate');
-                                void numbs.offsetWidth; // Примусове перерахування
-                                setTimeout(() => {
-                                    numbs.classList.add('animate');
-                                }, 200);
-                            }
-                        }
-
-                        // Позначити, що анімація завершена
-                        card.classList.add('animation-done');
-                         card.animationPlayed = true;
-                    }
-                } else if (!entry.isIntersecting) {
-                        card.animationPlayed = false;
-                    // Видалити клас 'animation-done' при виході з видимості, якщо потрібно
-                    card.classList.remove('animation-done');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            once: true 
-        });
-
-        elements.forEach(element => {
-            observer.observe(element);
-        });
-
-        svgElement.forEach(card => {
-            card.addEventListener("mouseenter", function ({ currentTarget }) {
-                const path = currentTarget.querySelectorAll("path.animate-on-scroll");
-                path.forEach(element => {
-                    element.classList.add("active");
-                    element.querySelectorAll("animate, animateTransform").forEach(animation => {
-                        animation.beginElement();
                     });
-                });
 
-                if (card.matches('.profit-new__item-numb')) {
-                    const numbs = card.querySelector('.profit-new__numbs')
-                    if (!numbs.matches('.animate')) {
-                        numbs.classList.add('animate');
-                    } else {
-                        numbs.classList.remove('animate');
-                        setTimeout(() => {
-                            numbs.classList.add('animate')
-                        }, 200);
+                    if (card.matches('.profit-new__item-numb')) {
+                        const numbs = card.querySelector('.profit-new__numbs')
+                        if (!numbs.matches('.animate')) {
+                            numbs.classList.add('animate');
+                        } else {
+                            numbs.classList.remove('animate');
+                            setTimeout(() => {
+                                numbs.classList.add('animate')
+                            }, 200);
+                        }
                     }
-                }
+                });
             });
         });
-    });
+
 
 </script>
 
